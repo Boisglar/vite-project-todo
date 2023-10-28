@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import CardButton from './components/CardButton/CardButton';
 import Header from './components/Header/Header';
@@ -9,23 +9,13 @@ import JournalForm from './components/JournalForm/JournalForm';
 import Body from './layout/Body/Body';
 import LeftPanel from './layout/LeftPanel/LeftPanel';
 
-const INIT_STATE = [
-  // {
-  //   id: 1,
-  //   title: 'Подготовка к обновлению',
-  //   text: 'лвоыалфол оварфыарфолыв лоарвыофарфывола ловарвыоларыфла ооврафл ',
-  //   date: new Date(),
-  // },
-  // {
-  //   id: 2,
-  //   title: 'Поход в горы',
-  //   text: 'лавлды лаовыа выоавылаовыаоыв лваовыладывоа ывлаоывла ыв',
-  //   date: new Date(),
-  // },
-];
-
 function App() {
-  const [data, setData] = useState(INIT_STATE);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem('data'));
+    setData(data.map((item) => ({ ...item, date: new Date(item.date) })));
+  }, []);
 
   const addItem = (item) => {
     setData((prev) => [
