@@ -1,14 +1,28 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '../Button/Button';
 import style from './JournalForm.module.css';
 import cn from 'classnames';
 
+const INITIAL_STATE = {
+  title: true,
+  post: true,
+  date: true,
+};
+
 export default function JournalForm({ onSubmit }) {
-  const [formValidState, setFormValideState] = useState({
-    title: true,
-    post: true,
-    date: true,
-  });
+  const [formValidState, setFormValideState] = useState(INITIAL_STATE);
+
+  useEffect(() => {
+    if (!formValidState.date || !formValidState.post || !formValidState.title) {
+      let timerId = setTimeout(() => {
+        setFormValideState(INITIAL_STATE);
+      }, 2000);
+
+      console.log(timerId);
+
+      return () => clearTimeout(timerId);
+    }
+  }, [formValidState]);
 
   const addJournalItem = (e) => {
     e.preventDefault();
@@ -77,7 +91,7 @@ export default function JournalForm({ onSubmit }) {
       </div>
       <textarea
         name="post"
-        id=""
+        id="post"
         cols="30"
         rows="10"
         className={cn(style['input'], {

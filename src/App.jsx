@@ -17,11 +17,17 @@ function App() {
     setData(data.map((item) => ({ ...item, date: new Date(item.date) })));
   }, []);
 
+  useEffect(() => {
+    if (data.length) {
+      localStorage.setItem('data', JSON.stringify(data));
+    }
+  }, [data]);
+
   const addItem = (item) => {
     setData((prev) => [
       ...prev,
       {
-        text: item.text,
+        post: item.post,
         title: item.title,
         date: new Date(item.date),
         id: prev.length > 0 ? Math.max(...prev.map((i) => i.id)) + 1 : 1,
